@@ -5,7 +5,7 @@ import { ChatMessage, Message } from '../components/ChatMessage';
 import { TypingIndicator } from '../components/TypingIndicator';
 import { ActionCard } from '../components/ActionCard';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Router, Repeat } from 'lucide-react';
+import { Router, Repeat, Zap } from 'lucide-react';
 
 export function WelcomePage() {
   const navigate = useNavigate();
@@ -105,6 +105,13 @@ export function WelcomePage() {
               title={t('welcome.setup.extender')}
               description={t('welcome.extender.desc')}
               onClick={handleSetupExtender}
+              variant="secondary"
+            />
+            <ActionCard
+              icon={Zap}
+              title={t('welcome.quick.setup')}
+              description={t('welcome.quick.desc')}
+              onClick={() => navigate('/gateway/quick')}
               variant="secondary"
             />
             <button

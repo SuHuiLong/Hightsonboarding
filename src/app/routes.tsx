@@ -20,6 +20,7 @@ import { GatewayOCRCapturePage } from './pages/gateway/GatewayOCRCapturePage';
 import { GatewayWANPushPage } from './pages/gateway/GatewayWANPushPage';
 import { GatewayWiFiPersonalizePage } from './pages/gateway/GatewayWiFiPersonalizePage';
 import { GatewayApplyPage } from './pages/gateway/GatewayApplyPage';
+import { QuickSetupPage } from './pages/gateway/QuickSetupPage';
 
 // Extender flow pages
 import { GatewaySelectionPage } from './pages/extender/GatewaySelectionPage';
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
   {
     path: '/gateway/apply',
     Component: GatewayApplyPage,
+  },
+  {
+    path: '/gateway/quick',
+    Component: QuickSetupPage,
   },
   // Legacy gateway routes (kept for compatibility)
   {
