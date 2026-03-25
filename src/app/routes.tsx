@@ -148,6 +148,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    Component: WelcomePage,
+    Component: LoginPage,
   },
 ]);
