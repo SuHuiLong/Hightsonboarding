@@ -9,15 +9,13 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useLocation } from '../../contexts/LocationContext';
 import { useGateway } from '../../contexts/GatewayContext';
 import {
-  Zap, Eye, EyeOff, Shield, ShieldCheck, ShieldAlert, Wifi,
-  Router, Signal, Bluetooth, Keyboard, ChevronDown, ChevronUp,
+  Zap, Eye, EyeOff, Wifi, Router, Signal, Bluetooth, Keyboard,
   RefreshCw, CheckCircle, Loader2, AlertCircle, MapPin, Lock
 } from 'lucide-react';
 
 type Phase = 'choose' | 'gw-ready' | 'ext-gateway' | 'ext-device' | 'running' | 'done';
 type DeviceType = 'gateway' | 'extender';
 type EntryMode = 'bt' | 'manual';
-type PasswordStrength = 'weak' | 'medium' | 'strong';
 
 interface Step {
   id: string;
@@ -85,7 +83,6 @@ export function QuickSetupPage() {
   // Extender: device entry
   const [entryMode, setEntryMode] = useState<EntryMode>('bt');
   const [isScanning, setIsScanning] = useState(false);
-  const [scanComplete, setScanComplete] = useState(false);
   const [scannedDevices, setScannedDevices] = useState<ScannedDevice[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
   const [manualSerial, setManualSerial] = useState('');
@@ -99,7 +96,6 @@ export function QuickSetupPage() {
 
   const effectiveLocation = autoLocation;
   const effectiveSSID = autoSSID;
-  const effectivePassword = autoPassword;
 
   const initAutoValues = () => {
     const loc = genLocation();
@@ -128,24 +124,21 @@ export function QuickSetupPage() {
   };
 
   const handleExtGatewayContinue = () => {
-    initAutoValues();
     setEntryMode('bt');
     setScannedDevices([]);
-    setScanComplete(false);
     setSelectedDeviceId('');
     setPhase('ext-device');
+    startBTScan();
   };
 
   const startBTScan = () => {
     setIsScanning(true);
     setScannedDevices([]);
-    setScanComplete(false);
     setSelectedDeviceId('');
     setTimeout(() => setScannedDevices([MOCK_DEVICES[0]]), 1800);
     setTimeout(() => {
       setScannedDevices(MOCK_DEVICES);
       setIsScanning(false);
-      setScanComplete(true);
     }, 3200);
   };
 
@@ -188,8 +181,7 @@ export function QuickSetupPage() {
     const extSteps: Step[] = [
       { id: '1', label: t('quick.step.bt'), status: 'pending' },
       { id: '2', label: t('quick.step.link'), status: 'pending' },
-      { id: '3', label: t('quick.step.wifi'), status: 'pending' },
-      { id: '4', label: t('quick.step.apply'), status: 'pending' },
+      { id: '3', label: t('quick.step.apply'), status: 'pending' },
     ];
     const initialSteps = deviceType === 'gateway' ? gwSteps : extSteps;
     setSteps(initialSteps);
@@ -236,9 +228,7 @@ export function QuickSetupPage() {
       setTimeout(() => activate(1), 3400);
       setTimeout(() => { complete(1); addMessage('m3', t('quick.running.link')); }, 5200);
       setTimeout(() => activate(2), 5600);
-      setTimeout(() => { complete(2); addMessage('m4', t('quick.running.extender.wifi')); }, 7400);
-      setTimeout(() => activate(3), 7800);
-      setTimeout(() => { complete(3); setPhase('done'); }, 9800);
+      setTimeout(() => { complete(2); setPhase('done'); }, 7400);
     }
   };
 
@@ -263,22 +253,13 @@ export function QuickSetupPage() {
     setManualModel('');
     setSelectedDeviceId('');
     setScannedDevices([]);
-    setScanComplete(false);
     setEntryMode('bt');
-    initAutoValues();
     setPhase('ext-device');
+    startBTScan();
   };
 
   const handleFinish = () => {
     navigate(deviceType === 'gateway' ? '/gateway/success' : '/extender/success');
-  };
-
-  const getPasswordStrength = (pw: string): PasswordStrength => {
-    if (pw.length < 8) return 'weak';
-    const score = [
-      /[A-Z]/.test(pw), /[a-z]/.test(pw), /[0-9]/.test(pw), /[!@#$%^&*]/.test(pw),
-    ].filter(Boolean).length;
-    return score >= 3 && pw.length >= 12 ? 'strong' : 'medium';
   };
 
   return (
@@ -513,34 +494,6 @@ export function QuickSetupPage() {
                 </div>
               )}
 
-              {/* Editable location & Wi-Fi info */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus-within:ring-2 focus-within:ring-purple-500">
-                  <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <input type="text" value={autoLocation} onChange={(e) => setAutoLocation(e.target.value)}
-                    placeholder={t('quick.form.location.placeholder')}
-                    className={`flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none ${isRTL ? 'text-right' : 'text-left'}`}
-                  />
-                </div>
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus-within:ring-2 focus-within:ring-purple-500">
-                  <Wifi className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <input type="text" value={autoSSID} onChange={(e) => setAutoSSID(e.target.value)}
-                    placeholder={t('quick.form.ssid.placeholder')}
-                    className={`flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none ${isRTL ? 'text-right' : 'text-left'}`}
-                  />
-                </div>
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus-within:ring-2 focus-within:ring-purple-500">
-                  <Lock className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <input type={showAdvPassword ? 'text' : 'password'} value={autoPassword} onChange={(e) => setAutoPassword(e.target.value)}
-                    placeholder={t('quick.form.password.placeholder')}
-                    className={`flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none ${isRTL ? 'text-right' : 'text-left'}`}
-                  />
-                  <button type="button" onClick={() => setShowAdvPassword((v) => !v)} className="text-gray-400 hover:text-gray-600 flex-shrink-0">
-                    {showAdvPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-
               {extDeviceReady && (
                 <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                   onClick={() => setPhase('running')}
@@ -552,6 +505,8 @@ export function QuickSetupPage() {
               )}
             </motion.div>
           )}
+
+          {/* ── EXT GATEWAY SELECTION (no longer used for extender) ── */}
 
           {/* ── RUNNING ── */}
           {(phase === 'running' || phase === 'done') && (

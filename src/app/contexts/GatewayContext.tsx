@@ -9,12 +9,20 @@ export interface Gateway {
   createdAt: Date;
 }
 
+interface WiFiConfig {
+  ssid: string;
+  password: string;
+  location: string;
+}
+
 interface GatewayContextType {
   gateways: Gateway[];
   addGateway: (gateway: Gateway) => void;
   getGateway: (id: string) => Gateway | undefined;
   selectedGateway: Gateway | null;
   setSelectedGateway: (gateway: Gateway | null) => void;
+  wifiConfig: WiFiConfig | null;
+  setWifiConfig: (config: WiFiConfig | null) => void;
 }
 
 const GatewayContext = createContext<GatewayContextType | undefined>(undefined);
@@ -22,6 +30,7 @@ const GatewayContext = createContext<GatewayContextType | undefined>(undefined);
 export function GatewayProvider({ children }: { children: ReactNode }) {
   const [gateways, setGateways] = useState<Gateway[]>([]);
   const [selectedGateway, setSelectedGateway] = useState<Gateway | null>(null);
+  const [wifiConfig, setWifiConfig] = useState<WiFiConfig | null>(null);
 
   const addGateway = useCallback((gateway: Gateway) => {
     setGateways((prev) => [...prev, gateway]);
@@ -39,6 +48,8 @@ export function GatewayProvider({ children }: { children: ReactNode }) {
         getGateway,
         selectedGateway,
         setSelectedGateway,
+        wifiConfig,
+        setWifiConfig,
       }}
     >
       {children}

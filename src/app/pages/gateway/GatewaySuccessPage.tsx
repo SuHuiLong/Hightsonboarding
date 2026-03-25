@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { ChatLayout } from '../../components/ChatLayout';
@@ -16,27 +16,19 @@ export function GatewaySuccessPage() {
   const { t, isRTL } = useLanguage();
   const { config } = useWhiteLabel();
   const { mainLocation } = useLocation();
-  const { addGateway } = useGateway();
+  const { gateways } = useGateway();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(true);
   const [showStats, setShowStats] = useState(false);
   const [showActions, setShowActions] = useState(false);
-  const hasAddedGateway = useRef(false);
+
+  // Get the actual WiFi SSID from the most recently added gateway
+  const latestGateway = gateways.length > 0 ? gateways[gateways.length - 1] : null;
+  const wifiSSID = latestGateway?.setupSSID || 'Gateway-Onboarding';
 
   useEffect(() => {
-    // Add gateway to context only once
-    if (!hasAddedGateway.current) {
-      const newGateway = {
-        id: `gw-${Date.now()}`,
-        name: 'Gateway',
-        location: mainLocation || 'Home',
-        setupSSID: 'Gateway-Onboarding',
-        status: 'online' as const,
-        createdAt: new Date(),
-      };
-      addGateway(newGateway);
-      hasAddedGateway.current = true;
-    }
+    // Gateway is already added by QuickSetupPage or other setup flows
+    // No need to add it again here
 
     const timer1 = setTimeout(() => {
       setMessages([
@@ -59,10 +51,10 @@ export function GatewaySuccessPage() {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [t, mainLocation]); // Removed addGateway from dependencies
+  }, [t, mainLocation]);
 
   const stats = [
-    { icon: Wifi, label: t('gateway.success.ssid'), value: 'Gateway-Onboarding' },
+    { icon: Wifi, label: t('gateway.success.ssid'), value: wifiSSID },
     { icon: CheckCircle, label: t('gateway.success.status'), value: 'Online' },
     { icon: MapPin, label: t('gateway.success.location'), value: mainLocation || 'Home' },
   ];

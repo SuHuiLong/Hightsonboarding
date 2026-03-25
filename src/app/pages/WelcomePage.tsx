@@ -64,9 +64,25 @@ export function WelcomePage() {
         timestamp: new Date(),
       },
     ]);
-    
+
     setTimeout(() => {
       navigate('/extender/gatewayselection');
+    }, 500);
+  };
+
+  const handleQuickSetup = () => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: '2',
+        type: 'user',
+        content: t('welcome.quick.setup'),
+        timestamp: new Date(),
+      },
+    ]);
+
+    setTimeout(() => {
+      navigate('/gateway/quick');
     }, 500);
   };
 
@@ -107,11 +123,11 @@ export function WelcomePage() {
               onClick={handleSetupExtender}
               variant="secondary"
             />
-            <ActionCard
+                        <ActionCard
               icon={Zap}
               title={t('welcome.quick.setup')}
               description={t('welcome.quick.desc')}
-              onClick={() => navigate('/gateway/quick')}
+              onClick={handleQuickSetup}
               variant="secondary"
             />
             <button

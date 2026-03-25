@@ -6,6 +6,7 @@ import { ChatMessage, Message } from '../../components/ChatMessage';
 import { TypingIndicator } from '../../components/TypingIndicator';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useLocation } from '../../contexts/LocationContext';
+import { useGateway } from '../../contexts/GatewayContext';
 import { Wifi, Eye, EyeOff, Shield, ShieldCheck, ShieldAlert, MapPin } from 'lucide-react';
 
 type PasswordStrength = 'weak' | 'medium' | 'strong';
@@ -14,6 +15,7 @@ export function GatewayWiFiPersonalizePage() {
   const navigate = useNavigate();
   const { t, isRTL } = useLanguage();
   const { mainLocation, setMainLocation } = useLocation();
+  const { setWifiConfig } = useGateway();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(true);
   const [ssid, setSSID] = useState('');
@@ -133,6 +135,13 @@ export function GatewayWiFiPersonalizePage() {
   };
 
   const handleContinue = () => {
+    // Save WiFi config to context for use in subsequent pages
+    setWifiConfig({
+      ssid,
+      password,
+      location: mainLocation || 'Home',
+    });
+
     setMessages((prev) => [
       ...prev,
       {

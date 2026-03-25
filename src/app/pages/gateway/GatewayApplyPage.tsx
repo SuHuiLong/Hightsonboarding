@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChatLayout } from '../../components/ChatLayout';
@@ -6,6 +6,7 @@ import { ChatMessage, Message } from '../../components/ChatMessage';
 import { TypingIndicator } from '../../components/TypingIndicator';
 import { SetupProgress } from '../../components/SetupProgress';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useGateway } from '../../contexts/GatewayContext';
 import { Wifi, RadioTower, ArrowRightLeft, CheckCircle } from 'lucide-react';
 
 interface Step {
@@ -17,6 +18,7 @@ interface Step {
 export function GatewayApplyPage() {
   const navigate = useNavigate();
   const { t, isRTL } = useLanguage();
+  const { wifiConfig, addGateway } = useGateway();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(true);
   const [steps, setSteps] = useState<Step[]>([
@@ -27,6 +29,7 @@ export function GatewayApplyPage() {
   ]);
   const [showSwitchAnimation, setShowSwitchAnimation] = useState(false);
   const [switchPhase, setSwitchPhase] = useState<'old' | 'switching' | 'new'>('old');
+  const gatewayAddedRef = useRef(false);
 
   useEffect(() => {
     // Initial message
@@ -80,6 +83,18 @@ export function GatewayApplyPage() {
 
     // Navigate to success
     const navTimer = setTimeout(() => {
+      // Add gateway to context before navigating
+      if (!gatewayAddedRef.current && wifiConfig) {
+        addGateway({
+          id: `gw-${Date.now()}`,
+          name: wifiConfig.ssid,
+          location: wifiConfig.location,
+          setupSSID: wifiConfig.ssid,
+          status: 'online',
+          createdAt: new Date(),
+        });
+        gatewayAddedRef.current = true;
+      }
       navigate('/gateway/success');
     }, 13000);
 
@@ -89,7 +104,7 @@ export function GatewayApplyPage() {
       clearTimeout(finalTimer);
       clearTimeout(navTimer);
     };
-  }, [t, navigate]);
+  }, [t, navigate, wifiConfig, addGateway]);
 
   return (
     <ChatLayout>

@@ -29,7 +29,6 @@ import { ExtenderStep2Page } from './pages/extender/ExtenderStep2Page';
 import { ExtenderStep3Page } from './pages/extender/ExtenderStep3Page';
 import { ExtenderRoomPage } from './pages/extender/ExtenderRoomPage';
 import { ExtenderConnectingPage } from './pages/extender/ExtenderConnectingPage';
-import { ExtenderWiFiPage } from './pages/extender/ExtenderWiFiPage';
 import { ExtenderSuccessPage } from './pages/extender/ExtenderSuccessPage';
 
 export const router = createBrowserRouter([
@@ -112,10 +111,6 @@ export const router = createBrowserRouter([
   {
     path: '/extender/room',
     Component: ExtenderRoomPage,
-  },
-  {
-    path: '/extender/wifi',
-    Component: ExtenderWiFiPage,
   },
   {
     path: '/extender/connecting',
