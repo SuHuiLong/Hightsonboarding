@@ -38,7 +38,6 @@ Legacy gateway routes (kept for compatibility):
 
 | Route | Page |
 |---|---|
-| `/gateway/location` | GatewayLocationPage |
 | `/gateway/wanconfig` | GatewayWANConfigPage |
 | `/gateway/step2` | GatewayStep2Page |
 
@@ -169,7 +168,6 @@ Legacy gateway routes (kept for compatibility):
 │   │   ├── GatewayWANPushPage.tsx
 │   │   ├── GatewayWiFiPersonalizePage.tsx
 │   │   ├── GatewayApplyPage.tsx
-│   │   ├── GatewayLocationPage.tsx  # legacy
 │   │   ├── GatewayWANConfigPage.tsx # legacy
 │   │   ├── GatewayStep2Page.tsx     # legacy
 │   │   └── GatewaySuccessPage.tsx

@@ -6,7 +6,7 @@ import { ChatMessage, Message } from '../../components/ChatMessage';
 import { TypingIndicator } from '../../components/TypingIndicator';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useLocation } from '../../contexts/LocationContext';
-import { Sofa, BedDouble, Utensils, Bath, Briefcase, Warehouse, MapPin } from 'lucide-react';
+import { Sofa, BedDouble, Utensils, Bath, BookOpen, Warehouse, MapPin } from 'lucide-react';
 
 export function ExtenderRoomPage() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export function ExtenderRoomPage() {
     { id: 'bedroom', icon: BedDouble, label: t('extender.room.bedroom') },
     { id: 'kitchen', icon: Utensils, label: t('extender.room.kitchen') },
     { id: 'bathroom', icon: Bath, label: t('extender.room.bathroom') },
-    { id: 'office', icon: Briefcase, label: t('extender.room.office') },
+    { id: 'study', icon: BookOpen, label: t('extender.room.study') },
     { id: 'garage', icon: Warehouse, label: t('extender.room.garage') },
   ];
 

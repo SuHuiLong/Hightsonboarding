@@ -9,7 +9,6 @@ import { SettingsPage } from './pages/SettingsPage';
 
 // Gateway flow pages
 import { GatewayStep1Page } from './pages/gateway/GatewayStep1Page';
-import { GatewayLocationPage } from './pages/gateway/GatewayLocationPage';
 import { GatewayWANConfigPage } from './pages/gateway/GatewayWANConfigPage';
 import { GatewayStep2Page } from './pages/gateway/GatewayStep2Page';
 import { GatewaySuccessPage } from './pages/gateway/GatewaySuccessPage';
@@ -73,10 +72,6 @@ export const router = createBrowserRouter([
     Component: QuickSetupPage,
   },
   // Legacy gateway routes (kept for compatibility)
-  {
-    path: '/gateway/location',
-    Component: GatewayLocationPage,
-  },
   {
     path: '/gateway/wanconfig',
     Component: GatewayWANConfigPage,

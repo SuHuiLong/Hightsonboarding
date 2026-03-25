@@ -131,7 +131,7 @@ export function GatewayOCRCapturePage() {
       },
     ]);
     setTimeout(() => {
-      navigate('/gateway/location');
+      navigate('/gateway/wanpush');
     }, 500);
   };
 

@@ -78,7 +78,7 @@ export function GatewayWANConfigPage() {
     };
     
     console.log('WAN Config:', wanConfig);
-    navigate('/gateway/location');
+    navigate('/gateway/wanpush');
   };
 
   const isFormValid = () => {

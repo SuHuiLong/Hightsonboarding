@@ -8,7 +8,7 @@ import { TopBar } from '../components/TopBar';
 export function LoginPage() {
   const navigate = useNavigate();
   const { t, isRTL } = useLanguage();
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [showError, setShowError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -26,34 +26,12 @@ export function LoginPage() {
       return;
     }
 
-    // Validate email
-    if (!email.trim()) {
-      setFormError(t('login.error.email'));
-      return;
-    }
-    
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setFormError(t('login.error.email.invalid'));
-      return;
-    }
-
-    // Validate password
-    if (!password.trim()) {
-      setFormError(t('login.error.password'));
-      return;
-    }
-
-    if (password.length < 6) {
-      setFormError(t('login.error.password.short'));
-      return;
-    }
-
-    // Store login info
+    // Store login info (email and password are optional)
     localStorage.setItem('loginMethod', 'cloud');
-    localStorage.setItem('username', email);
-    
+    if (email.trim()) {
+      localStorage.setItem('username', email);
+    }
+
     // Navigate to welcome page
     navigate('/welcome');
   };
