@@ -4,7 +4,6 @@ import { ChatLayout } from '../components/ChatLayout';
 import { ChatMessage, Message } from '../components/ChatMessage';
 import { TypingIndicator } from '../components/TypingIndicator';
 import { ActionCard } from '../components/ActionCard';
-import { DemoInfoBanner } from '../components/DemoInfoBanner';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Router, Repeat } from 'lucide-react';
 
@@ -75,9 +74,6 @@ export function WelcomePage() {
     <ChatLayout>
       <div className="min-h-[calc(100vh-5rem)] flex flex-col justify-between py-8">
         <div>
-          {/* Demo Info Banner */}
-          <DemoInfoBanner />
-          
           {/* Welcome Header */}
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">

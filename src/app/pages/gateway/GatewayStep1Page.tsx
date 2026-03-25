@@ -58,7 +58,7 @@ export function GatewayStep1Page() {
     ]);
 
     setTimeout(() => {
-      navigate('/gateway/location');
+      navigate('/gateway/qrscan');
     }, 500);
   };
 

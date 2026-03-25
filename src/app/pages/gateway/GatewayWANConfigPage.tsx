@@ -5,7 +5,7 @@ import { ChatLayout } from '../../components/ChatLayout';
 import { ChatMessage, Message } from '../../components/ChatMessage';
 import { TypingIndicator } from '../../components/TypingIndicator';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { Wifi, Globe, Network, CheckCircle } from 'lucide-react';
+import { Wifi, Globe, Network, CheckCircle, Camera, Edit3 } from 'lucide-react';
 
 type WANType = 'dhcp' | 'pppoe' | 'static';
 
@@ -17,6 +17,7 @@ export function GatewayWANConfigPage() {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedWAN, setSelectedWAN] = useState<WANType>('dhcp');
   const [showForm, setShowForm] = useState(false);
+  const [showPPPoEChoice, setShowPPPoEChoice] = useState(false);
   
   // PPPoE form
   const [pppoeUsername, setPppoeUsername] = useState('');
@@ -48,8 +49,11 @@ export function GatewayWANConfigPage() {
 
   const handleSelectWAN = (type: WANType) => {
     setSelectedWAN(type);
+    setShowPPPoEChoice(false);
     if (type === 'dhcp') {
-      // DHCP doesn't need additional config
+      setShowForm(false);
+    } else if (type === 'pppoe') {
+      setShowPPPoEChoice(true);
       setShowForm(false);
     } else {
       setShowForm(true);
@@ -74,12 +78,12 @@ export function GatewayWANConfigPage() {
     };
     
     console.log('WAN Config:', wanConfig);
-    navigate('/gateway/step2');
+    navigate('/gateway/location');
   };
 
   const isFormValid = () => {
     if (selectedWAN === 'dhcp') return true;
-    if (selectedWAN === 'pppoe') return pppoeUsername && pppoePassword;
+    if (selectedWAN === 'pppoe') return !showPPPoEChoice && pppoeUsername && pppoePassword;
     if (selectedWAN === 'static') return staticIP && subnetMask && gateway && dns1;
     return false;
   };
@@ -185,6 +189,50 @@ export function GatewayWANConfigPage() {
                 ))}
               </motion.div>
             )}
+
+            {/* PPPoE Credential Entry Choice */}
+            <AnimatePresence>
+              {showPPPoEChoice && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="space-y-3"
+                >
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {t('gateway.wan.pppoe.howenter')}
+                  </p>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => navigate('/gateway/ocr')}
+                    className="w-full p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-300 dark:hover:border-blue-700 text-left flex items-center gap-3"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center flex-shrink-0">
+                      <Camera className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{t('gateway.wan.pppoe.scan')}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('gateway.wan.pppoe.scan.desc')}</p>
+                    </div>
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => { setShowPPPoEChoice(false); setShowForm(true); }}
+                    className="w-full p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-300 dark:hover:border-blue-700 text-left flex items-center gap-3"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
+                      <Edit3 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{t('gateway.wan.pppoe.enter')}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{t('gateway.wan.pppoe.enter.desc')}</p>
+                    </div>
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* PPPoE Form */}
             <AnimatePresence>

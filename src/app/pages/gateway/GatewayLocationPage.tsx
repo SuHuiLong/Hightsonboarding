@@ -60,7 +60,7 @@ export function GatewayLocationPage() {
     ]);
 
     setTimeout(() => {
-      navigate('/gateway/wanconfig');
+      navigate('/gateway/wanpush');
     }, 500);
   };
 

@@ -76,7 +76,7 @@ export function ExtenderRoomPage() {
 
     setTimeout(() => {
       // Always navigate to the merged connecting page
-      navigate('/extender/connecting');
+      navigate('/extender/wifi');
     }, 500);
   };
 
