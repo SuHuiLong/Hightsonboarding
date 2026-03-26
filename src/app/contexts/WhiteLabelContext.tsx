@@ -14,7 +14,7 @@ interface WhiteLabelContextType {
 }
 
 const defaultConfig: WhiteLabelConfig = {
-  brandName: 'Gateway',
+  brandName: 'Heights Wi-Fi',
   primaryColor: '#6366f1', // indigo-500
   secondaryColor: '#8b5cf6', // violet-500
   accentColor: '#06b6d4', // cyan-500

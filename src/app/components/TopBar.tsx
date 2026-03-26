@@ -1,4 +1,4 @@
-import { Moon, Sun, Globe, Settings } from 'lucide-react';
+import { Moon, Sun, Globe, Settings, Wifi } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage, Language } from '../contexts/LanguageContext';
 import { useWhiteLabel } from '../contexts/WhiteLabelContext';
@@ -34,7 +34,7 @@ export function TopBar({ showLogo = true, showSettings = true }: TopBarProps) {
               }}
               aria-hidden="true"
             >
-              <span className="text-white font-bold text-sm">G</span>
+              <Wifi className="w-4 h-4 text-white" strokeWidth={2.5} />
             </div>
             <h1 className="font-semibold text-gray-900 dark:text-gray-100">
               {config.brandName}

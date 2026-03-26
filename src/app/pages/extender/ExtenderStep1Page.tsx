@@ -58,9 +58,9 @@ export function ExtenderStep1Page() {
 
     // Simulate Bluetooth scanning with progressive device discovery
     const mockDevices: ScannedDevice[] = [
-      { id: '1', serialNumber: 'EXT-2024-A1B2-C3D4', model: 'Gateway Extender Pro', signalStrength: 95 },
-      { id: '2', serialNumber: 'EXT-2024-E5F6-G7H8', model: 'Gateway Extender', signalStrength: 82 },
-      { id: '3', serialNumber: 'EXT-2024-I9J0-K1L2', model: 'Gateway Extender Plus', signalStrength: 68 },
+      { id: '1', serialNumber: 'EXT-2024-A1B2-C3D4', model: 'Heights Extender Pro', signalStrength: 95 },
+      { id: '2', serialNumber: 'EXT-2024-E5F6-G7H8', model: 'Heights Extender', signalStrength: 82 },
+      { id: '3', serialNumber: 'EXT-2024-I9J0-K1L2', model: 'Heights Extender Plus', signalStrength: 68 },
     ];
 
     // Add devices progressively
